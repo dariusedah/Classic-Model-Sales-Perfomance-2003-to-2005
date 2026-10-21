@@ -2,12 +2,12 @@
 <img width="1500" height="800" alt="image" src="https://github.com/user-attachments/assets/452aa12b-3e2b-4687-962c-0c63a6ee3a0f" />
 
 # Project Summary
-## Classic Models sells scale-model cars, motorcycles, planes, ships, trains, trucks and buses to retailers in 27 countries. This project builds one report that answers four questions: what sells, what earns profit, how fast orders ship, and which customers still owe money.
+### Classic Models sells scale-model cars, motorcycles, planes, ships, trains, trucks and buses to retailers in 27 countries. This project builds one report that answers four questions: what sells, what earns profit, how fast orders ship, and which customers still owe money.
 
 The dataset is a public sample. The business scenario below is my framing of how a sales manager or finance lead would use the data.
 
 # Business Problem
-## Sales, product, shipping and payment data sit in separate tables. A manager cannot see in one place:
+### Sales, product, shipping and payment data sit in separate tables. A manager cannot see in one place:
 
 - Which products, countries and customers drive revenue and profit
 - Whether growth is real, because 2005 holds only five months of data
@@ -16,3 +16,130 @@ The dataset is a public sample. The business scenario below is my framing of how
 - How much customers owe and who owes it
 
 Without that view, decisions on stock, sales coverage and credit control rely on guesswork.
+
+# Objective and Business Questions
+### Purpose: To give management one report that covers sales, profit, orders and collections, with figures that compare fairly across years.
+
+## Business Questions the report answers:
+
+* How much did the business sell, and how did sales change by year on a like-for-like basis?
+* Which product lines, products, countries, customers and sales reps drive sales?
+* What is the gross profit and gross margin, and where does profit come from?
+* Which months carry the most profit, and do sales show seasonality or anomalies?
+* How many orders did the business take, what do they contain and how fast do they ship?
+* How much of sales has customers paid, and who owes the most?
+
+# Solution
+I built a Power BI report with six pages: Overview, Sales, Profit, Orders, Payments and Report (definitions and notes). Each page answers one group of questions and shares the same filters for year, month, country and product line.
+
+Three design decisions solve the main problems in the data:
+
+- Cancelled orders are excluded from sales, cost and profit, so the figures show real revenue.
+- A like-for-like comparison uses January to May only for all three years, because 2005 ends in May.
+- Gross profit uses each product's buy price as cost of sales, so profit sits at line level and rolls up to any dimension.
+
+Result: a single report that shows $9.37M in sales and $3.73M in gross profit, ranks products, countries, customers and reps, and lists the customers with unpaid balances.
+
+# Tools
+- MS Power BI
+- Power Query
+- DAX
+- MS Excel
+
+# Dataset
+Source: Classic Models sample database, loaded as CSV files. The company is fictional and the data is for learning.
+
+Period: January 2003 to May 2005. 2005 holds five months of data.
+
+# Data Model
+### The model has 8 source tables, one date table and one helper table.
+<img width="1450" height="750" alt="image" src="https://github.com/user-attachments/assets/cbf2b796-9be3-40a7-8249-eb4b3f013971" />
+
+Relationships, all many-to-one with single-direction filters:
+
+- order details to orders, on order number
+- order details to products, on product code
+- products to productlines, on product line
+- orders to customers, on customer number
+- payments to customers, on customer number
+- customers to employees, on sales rep number
+- employees to offices, on office code
+- UnassignedRep to employees, on employee number
+
+Date table: a calendar from 1 January 2003 to 31 December 2005, built in DAX, with year, month, quarter and weekday columns.
+
+UnassignedRep: a one-row table that holds a placeholder rep with employee number 0. I appended it to the employees table so customers without a sales rep still appear in rep analysis.
+
+# Data Preparation
+Steps I applied in Power Query:
+
+- Promoted headers and set data types on every table
+- Trimmed text in name fields and merged first and last names into one full name column
+- Replaced the text value NULL with true nulls in state, shipped date and sales rep fields
+- Removed duplicate customers on customer number
+- Removed columns not used in the report, such as phone, address lines, postal code, comments and HTML descriptions
+- Added calculated columns in order details: Sales, Cost of Sales and Profit
+- Merged products into order details to bring in buy price
+- Added order columns: month name, day name, shipping days and delivery bands
+- Added a product stock flag that marks products with fewer than 1,000 units in stock as stock required
+
+### Example, order details line-level calculations:
+Added Custom (column) = Table.AddColumn(#"Changed Type", "Sales", each [priceEach]*[quantityOrdered])
+
+Added Custom1 (column) = Table.AddColumn(#"Reordered Columns1", "CostOfSales", each [buyPrice]*[quantityOrdered])
+
+Added Custom2 (column) = Table.AddColumn(#"Added Custom1", "Profit", each [Sales]-[CostOfSales])
+
+# Key Measures
+### Sales, cost and profit exclude cancelled orders.
+<img width="500" height="200" alt="image" src="https://github.com/user-attachments/assets/0ea2a58d-e38b-4245-8494-1e7baefe6d8c" />
+
+### Like-for-like growth. The measure compares the latest year with the prior year up to the same cut-off date, so a partial year does not distort the result.
+<img width="500" height="160" alt="image" src="https://github.com/user-attachments/assets/bdea8e5b-07f8-44ed-899c-772a83966fa0" />
+
+### Seasonality. The measure averages the yearly total for each month across the years that have orders in that month.
+<img width="450" height="150" alt="image" src="https://github.com/user-attachments/assets/95d6949a-f76a-4dfd-b5e6-8eb47325b782" />
+
+### Other Measures
+<img width="500" height="180" alt="image" src="https://github.com/user-attachments/assets/3b6a4097-b6aa-4293-b347-daa1623c607e" />
+
+# Key Findings
+## Overview
+<img width="1242" height="655" alt="image" src="https://github.com/user-attachments/assets/f5258ab0-e80a-47c7-933c-9d8637c0cab3" />
+
+- Total sales are $9.37M from 326 orders. Average order value is $29.3K.
+- Gross profit is $3.73M, a gross margin of 39.8%. Cost of sales is $5.63M.
+- On a like-for-like January to May basis, sales rose from $0.77M in 2003 to $1.19M in 2004 and $1.77M in 2005. Sales in 2005 were 48.3% above the same months of 2004.
+- Classic Cars lead with $3.8M, about 41% of sales. Vintage Cars follow with $1.8M. Together they make up about 60% of sales. Trains bring in $0.2M.
+- The USA is the largest market at $3.2M, about 34% of sales. Spain and France follow at $1.1M and $1.0M.
+
+## Sales
+<img width="1200" height="600" alt="image" src="https://github.com/user-attachments/assets/0112267a-944d-49e1-9a47-eec0398e8f23" />
+
+- Daily sales spike between October and December. Sales dipped on 4 August 2004.
+- The 1992 Ferrari 360 Spider red is the top product by sales at $0.27M. It is also the top product by units, with 1,808 units.
+- Euro+ Shopping Channel is the largest customer at $773.6K, about 8% of sales. The top two customers account for about 15%.
+- 98 of 122 customers placed at least one non-cancelled order.
+
+## Profit
+<img width="1200" height="650" alt="image" src="https://github.com/user-attachments/assets/61cc4133-88f1-42b3-bb39-675e0f8f28d6" />
+
+- Gross profit growth on a like-for-like basis is 44.4%. It trails sales growth of 48.3%, so margin narrowed slightly in 2005.
+- Classic Cars generate $1.49M in gross profit, about 40% of the total. Vintage Cars add $0.72M.
+- Average gross profit peaks in November at $389K, twice the October figure of $193K. June is the lowest month at $72K. October to December together hold about 45% of the average annual gross profit.
+- Margin by product ranges between roughly 20% and 60%. Profit depends more on sales volume than on margin.
+
+
+### Orders and Fulfilment
+
+
+
+
+
+
+
+
+
+
+
+
