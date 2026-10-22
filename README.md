@@ -111,9 +111,31 @@ Steps I applied in Power Query:
 - Margin by product ranges between roughly 20% and 60%. Profit depends more on sales volume than on margin.
 
 
-### Orders and Fulfilment
+## Orders and Fulfilment
+<img width="1200" height="650" alt="image" src="https://github.com/user-attachments/assets/c97800fa-4ac7-4d13-9dcd-f7d9b085c080" />
 
+- Customers ordered 105.5K units, an average of 324 units per order.
+- Classic Cars lead unit volume with 36K units, followed by Vintage Cars with 23K.
+- Unit volume is spread across vendors. The top six vendors each supply between 8.4K and 9.7K units.
+- Of the 312 orders with a ship date, 307 shipped within six days and 5 took seven days or more.
 
+## Payment
+<img width="1200" height="650" alt="image" src="https://github.com/user-attachments/assets/43bfd3e1-46b4-46ff-bc06-8d42c6dfa94f" />
+
+- Customers paid $8.85M of $9.37M in sales. The outstanding balance is $511.5K, about 5.5% of sales.
+- Eight customers hold $407.9K of the balance, about 80%.
+- The USA has 36 customers, more than any other country. Germany has 13 and France has 12.
+
+# Recommendations
+
+1. Plan stock and staffing for October to December. These months carry about 45% of average annual gross profit, and November is the peak.
+2. Protect the Classic Cars and Vintage Cars lines. They carry about 60% of sales, so a supply problem in either line affects the whole business.
+3. Review credit terms for The Sharp Gifts Warehouse and La Rochelle Gifts. Both have unpaid shares well above the 5.5% company average.
+4. Set a collection routine for the top eight balances. They hold about 80% of the amount owed.
+5. Reduce reliance on a few reps and customers. The top three reps account for about 34% of sales and the top two customers for about 15%.
+6. Review the weakest products, which sell $28K to $33K each, for discount, bundling or removal.
+7. Investigate why gross profit grew more slowly than sales in 2005. Check discounts, product mix and buy prices.
+8. Keep the shipping standard. Almost all orders ship within six days, so the focus is the 5 late orders and the 14 orders not shipped.
 
 
 
