@@ -30,15 +30,7 @@ Objective: To give management one report that covers sales, profit, orders and c
 * How much of sales has customers paid, and who owes the most?
 
 # Solution
-I built a Power BI report with six pages: Overview, Sales, Profit, Orders, Payments and Report (definitions and notes). Each page answers one group of questions and shares the same filters for year, month, country and product line.
-
-Three design decisions solve the main problems in the data:
-
-- Cancelled orders are excluded from sales, cost and profit, so the figures show real revenue.
-- A like-for-like comparison uses January to May only for all three years, because 2005 ends in May.
-- Gross profit uses each product's buy price as cost of sales, so profit sits at line level and rolls up to any dimension.
-
-Result: a single report that shows $9.37M in sales and $3.73M in gross profit, ranks products, countries, customers and reps, and lists the customers with unpaid balances.
+I built a Power BI report with six pages: Overview, Sales, Profit, Orders and Payments that shows $9.37M in sales and $3.73M in gross profit, ranks products, countries, customers and reps, and lists the customers with unpaid balances.
 
 # Tools
 - MS Power BI
