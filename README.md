@@ -1,8 +1,8 @@
-# Classic Model Sales Performance, Jan 2003 to may 2005
+## Classic Model Sales Performance, Jan 2003 to may 2005
 <img width="1500" height="800" alt="image" src="https://github.com/user-attachments/assets/452aa12b-3e2b-4687-962c-0c63a6ee3a0f" />
 
 # Project Summary
-### Classic Models sells scale-model cars, motorcycles, planes, ships, trains, trucks and buses to retailers in 27 countries. This project builds one report that answers four questions: what sells, what earns profit, how fast orders ship, and which customers still owe money.
+Classic Models sells scale-model cars, motorcycles, planes, ships, trains, trucks and buses to retailers in 27 countries. This project builds one report that answers four questions: what sells, what earns profit, how fast orders ship, and which customers still owe money.
 
 The dataset is a public sample. The business scenario below is my framing of how a sales manager or finance lead would use the data.
 
@@ -17,8 +17,8 @@ The dataset is a public sample. The business scenario below is my framing of how
 
 Without that view, decisions on stock, sales coverage and credit control rely on guesswork.
 
-# Objective and Business Questions
-### Purpose: To give management one report that covers sales, profit, orders and collections, with figures that compare fairly across years.
+## Objective and Business Questions
+Objective: To give management one report that covers sales, profit, orders and collections, with figures that compare fairly across years.
 
 ## Business Questions the report answers:
 
@@ -57,15 +57,6 @@ Period: January 2003 to May 2005. 2005 holds five months of data.
 
 Relationships, all many-to-one with single-direction filters:
 
-- order details to orders, on order number
-- order details to products, on product code
-- products to productlines, on product line
-- orders to customers, on customer number
-- payments to customers, on customer number
-- customers to employees, on sales rep number
-- employees to offices, on office code
-- UnassignedRep to employees, on employee number
-
 Date table: a calendar from 1 January 2003 to 31 December 2005, built in DAX, with year, month, quarter and weekday columns.
 
 UnassignedRep: a one-row table that holds a placeholder rep with employee number 0. I appended it to the employees table so customers without a sales rep still appear in rep analysis.
@@ -84,11 +75,9 @@ Steps I applied in Power Query:
 - Added a product stock flag that marks products with fewer than 1,000 units in stock as stock required
 
 ### Example, order details line-level calculations:
-Added Custom (column) = Table.AddColumn(#"Changed Type", "Sales", each [priceEach]*[quantityOrdered])
 
-Added Custom1 (column) = Table.AddColumn(#"Reordered Columns1", "CostOfSales", each [buyPrice]*[quantityOrdered])
+<img width="600" height="120" alt="image" src="https://github.com/user-attachments/assets/1814bb86-ce06-4f39-a826-66f9520f967d" />
 
-Added Custom2 (column) = Table.AddColumn(#"Added Custom1", "Profit", each [Sales]-[CostOfSales])
 
 # Key Measures
 ### Sales, cost and profit exclude cancelled orders.
@@ -109,8 +98,8 @@ Added Custom2 (column) = Table.AddColumn(#"Added Custom1", "Profit", each [Sales
 
 - Total sales are $9.37M from 326 orders. Average order value is $29.3K.
 - Gross profit is $3.73M, a gross margin of 39.8%. Cost of sales is $5.63M.
-- On a like-for-like January to May basis, sales rose from $0.77M in 2003 to $1.19M in 2004 and $1.77M in 2005. Sales in 2005 were 48.3% above the same months of 2004.
-- Classic Cars lead with $3.8M, about 41% of sales. Vintage Cars follow with $1.8M. Together they make up about 60% of sales. Trains bring in $0.2M.
+- On a like-for-like January to May basis, sales rose from $0.77M in 2003 to $1.19M in 2004 and $1.77M in 2005.
+- Classic Cars lead with $3.8M, about 41% of sales. Vintage Cars follow with $1.8M. Together they make up about 60% of sales.
 - The USA is the largest market at $3.2M, about 34% of sales. Spain and France follow at $1.1M and $1.0M.
 
 ## Sales
@@ -126,7 +115,7 @@ Added Custom2 (column) = Table.AddColumn(#"Added Custom1", "Profit", each [Sales
 
 - Gross profit growth on a like-for-like basis is 44.4%. It trails sales growth of 48.3%, so margin narrowed slightly in 2005.
 - Classic Cars generate $1.49M in gross profit, about 40% of the total. Vintage Cars add $0.72M.
-- Average gross profit peaks in November at $389K, twice the October figure of $193K. June is the lowest month at $72K. October to December together hold about 45% of the average annual gross profit.
+- Average gross profit peaks in November at $389K. June is the lowest month at $72K. October to December together hold about 45% of the average annual gross profit.
 - Margin by product ranges between roughly 20% and 60%. Profit depends more on sales volume than on margin.
 
 
